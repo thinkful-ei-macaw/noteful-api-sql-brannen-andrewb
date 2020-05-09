@@ -29,7 +29,7 @@ noteRouter
         const newNote = { name, content, folderId }
 
         for(const[key, value] of Object.entries(newNote)) {
-            if(vale == null) {
+            if(value == null) {
                 return res.status(400).json({
                     error: { message: `Missing '${key}' in request body` }
                 })
