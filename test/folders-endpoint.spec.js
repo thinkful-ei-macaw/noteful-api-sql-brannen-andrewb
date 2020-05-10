@@ -1,6 +1,6 @@
 const knex = require('knex')
 const app = require('../src/app')
-const { TEST_DB_URL } = require('../src/config')
+const { TEST_DATABASE_URL } = require('../src/config')
 const { makeFoldersArray } = require('./app.fixtures')
 
 describe('Folders Endpoints', function() {
@@ -10,7 +10,7 @@ describe('Folders Endpoints', function() {
   
       db = knex({
         client: 'pg',
-        connection: TEST_DB_URL,
+        connection: TEST_DATABASE_URL,
       })
       app.set('db', db)
   
