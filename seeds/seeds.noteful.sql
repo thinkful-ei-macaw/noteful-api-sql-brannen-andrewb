@@ -5,7 +5,7 @@ VALUES
 ('3', 'Roar'),
 ('4', 'Chirp');
 
-INSERT INTO note (id, name, modified, folderId, content)
+INSERT INTO note (id, name, modified, folder_id, content)
 VALUES
 ('100', 'Dog', now() - '10 days'::INTERVAL, 1, 'Dogs go woof'),
 ('101', 'Cat', now() - '9 days'::INTERVAL, 2, 'Cats go meow'),

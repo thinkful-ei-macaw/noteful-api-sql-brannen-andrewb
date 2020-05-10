@@ -1,6 +1,6 @@
 const knex = require('knex')
 const app = require('../src/app')
-const { DB_URL } = require('../src/config')
+const { TEST_DB_URL } = require('../src/config')
 const { makeFoldersArray, makeNotesArray } = require('./app.fixtures')
 
 describe('Notes Endpoints', function() {
@@ -10,7 +10,7 @@ describe('Notes Endpoints', function() {
 
     db = knex({
       client: 'pg',
-      connection: DB_URL,
+      connection: TEST_DB_URL,
     })
     app.set('db', db)
 
@@ -72,16 +72,17 @@ describe('Notes Endpoints', function() {
         const testFolders = makeFoldersArray();
         const testNotes = makeNotesArray();
 
-      beforeEach('insert notes', () => {
-        return db
-          .into('folder')
-          .insert(testFolders)
-          .then(() => {
+        beforeEach(() => {
             return db
-              .into('note')
-              .insert(testNotes)
-          })
-      })
+              .into('folder')
+              .insert(testFolders)
+            })
+    
+          beforeEach(() => {
+            return db
+                .into('note')
+                .insert(testNotes)
+            })
 
       it('responds with 200 and the specified note', () => {
         const noteId = 2
@@ -93,56 +94,53 @@ describe('Notes Endpoints', function() {
     })
 })
 
-//   describe(`POST /notes`, () => {
-//     const testNotes = makeNotesArray();
-//     beforeEach('insert note', () => {
-//       return db
-//         .into('noteful')
-//         .insert(testNotes)
-//     })
+  describe(`POST /notes`, () => {
+    const testNotes = makeNotesArray();
+    beforeEach('insert note', () => {
+      return db
+        .into('note')
+        .insert(testNotes)
+    })
 
-//     it(`creates a note, responding with 201 and the new note`, () => {
-//       const newNote = {
-//         name: 'Test new note',
-//         content: 'Test new note content...'
-//       }
-//       return supertest(app)
-//         .post('/notes')
-//         .send(newNote)
-//         .expect(201)
-//         .expect(res => {
-//           expect(res.body.name).to.eql(newNote.title)
-//           expect(res.body.content).to.eql(newNote.content)
-//           expect(res.body).to.have.property('id')
-//           expect(res.headers.location).to.eql(`/notes/${res.body.id}`)
-//         })
-//         .then(res =>
-//           supertest(app)
-//             .get(`/notes/${res.body.id}`)
-//             .expect(res.body)
-//         )
-//     })
+    it(`creates a note, responding with 201 and the new note`, () => {
+      const newNote = {
+        name: 'Test new note',
+        content: 'Test new note content...'
+      }
+      return supertest(app)
+        .post('/notes')
+        .send(newNote)
+        .expect(201)
+        .then(res => {
+          expect(res.body.name).to.eql(newNote.name)
+          expect(res.body.content).to.eql(newNote.content)
+          expect(res.body).to.have.property('id')
+          return supertest(app)
+            .get(`/notes/${res.body.id}`)
+            .expect(res.body)
+        })
+      })
 
-//     const requiredFields = ['name', 'content']
+    const requiredFields = ['name', 'content']
 
-//     requiredFields.forEach(field => {
-//       const newNote = {
-//         name: 'Test new note',
-//         content: 'Test new note content...'
-//       }
+    requiredFields.forEach(field => {
+      const newNote = {
+        name: 'Test new note',
+        content: 'Test new note content...'
+      }
 
-//       it(`responds with 400 and an error message when the '${field}' is missing`, () => {
-//         delete newNote[field]
+      it(`responds with 400 and an error message when the '${field}' is missing`, () => {
+        delete newNote[field]
 
-//         return supertest(app)
-//           .post('/notes')
-//           .send(newNote)
-//           .expect(400, {
-//             error: { message: `Missing '${field}' in request body` }
-//           })
-//       })
-//     })
-//   })
+        return supertest(app)
+          .post('/notes')
+          .send(newNote)
+          .expect(400, {
+            error: { message: `Missing '${field}' in request body` }
+          })
+      })
+    })
+  })
 
 //   describe(`DELETE /notes/:note_id`, () => {
 //     context(`Given no notes`, () => {

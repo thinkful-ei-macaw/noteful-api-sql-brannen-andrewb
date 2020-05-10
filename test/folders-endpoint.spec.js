@@ -1,6 +1,6 @@
 const knex = require('knex')
 const app = require('../src/app')
-const { DB_URL } = require('../src/config')
+const { TEST_DB_URL } = require('../src/config')
 const { makeFoldersArray } = require('./app.fixtures')
 
 describe('Folders Endpoints', function() {
@@ -10,7 +10,7 @@ describe('Folders Endpoints', function() {
   
       db = knex({
         client: 'pg',
-        connection: DB_URL,
+        connection: TEST_DB_URL,
       })
       app.set('db', db)
   
@@ -78,20 +78,13 @@ describe('Folders Endpoints', function() {
   })
 
     describe(`POST /folders`, () => {
-    // const testFolders = makeFoldersArray();
-    // beforeEach('insert folder', () => {
-    //   return db
-    //     .into('folder')
-    //     .insert(testFolders)
-    // })
+      
 
     it(`creates a folder, responding with 201 and the new folder`, () => {
       const newFolder = {
-        id: 1,
-        name: 'Test new folder'
+          id: 1,
+          name: 'Test folder'
       }
-      delete newFolder.id
-      console.log(newFolder)
       return supertest(app)
         .post('/folders')
         .send(newFolder)
@@ -99,6 +92,7 @@ describe('Folders Endpoints', function() {
         .then(res => {
           expect(res.body.name).to.eql(newFolder.name)
           expect(res.body).to.have.property('id')
+
           return supertest(app)
             .get(`/folders/${res.body.id}`)
             .expect(200)

@@ -20,22 +20,22 @@ function makeNotesArray() {
         {
             id: 1,
             name: 'This Good Dog',
-            modified: new Date("2020-05-02T13:28:32.615Z"),
-            folderId: 1,
+            modified: new Date().toISOString(),
+            folder_id: 1,
             content: 'This is a note about a good dog',
         },
         {
             id: 2,
             name: 'This Very Good Dog',
-            modified: new Date("2020-05-02T13:28:32.615Z"),
-            folderId: 2,
+            modified: new Date().toISOString(),
+            folder_id: 2,
             content: 'This is a note about a very good dog',
         },
         {
             id: 3,
             name: 'This Great Dog',
-            modified: new Date("2020-05-02T13:28:32.615Z"),
-            folderId: 3,
+            modified: new Date().toISOString(),
+            folder_id: 3,
             content: 'This is a note about a great dog',
         }
     ];
