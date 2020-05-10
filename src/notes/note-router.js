@@ -18,7 +18,7 @@ noteRouter
     .route('/')
     .get((req, res, next) => {
         const knexInstance = req.app.get('db')
-        NoteService.getAllFolders(knexInstance)
+        NoteService.getAllNotes(knexInstance)
             .then(note => {
                 res.json(note.map(serializeNote))
             })
