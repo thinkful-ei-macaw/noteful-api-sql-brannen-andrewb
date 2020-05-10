@@ -3,7 +3,7 @@ const app = require('../src/app')
 const { DB_URL } = require('../src/config')
 const { makeFoldersArray, makeNotesArray } = require('./app.fixtures')
 
-describe('Articles Endpoints', function() {
+describe('Notes Endpoints', function() {
   let db
 
   before('make knex instance', () => {
@@ -35,16 +35,17 @@ describe('Articles Endpoints', function() {
       const testFolders = makeFoldersArray();
       const testNotes = makeNotesArray();
 
-      beforeEach('insert notes', () => {
+      beforeEach(() => {
         return db
-          .into('noteful')
+          .into('folder')
           .insert(testFolders)
-          .then(() => {
-            return db
-              .into('noteful')
-              .insert(testNotes)
-          })
-      })
+        })
+
+      beforeEach(() => {
+        return db
+            .into('note')
+            .insert(testNotes)
+        })
 
       it('responds with 200 and all of the notes', () => {
         return supertest(app)
@@ -57,40 +58,40 @@ describe('Articles Endpoints', function() {
     })
 
 
-//   describe(`GET /notes/note_:id`, () => {
-//     context(`Given no notes`, () => {
-//       it(`responds with 404`, () => {
-//         const noteId = 123
-//         return supertest(app)
-//           .get(`/notes/${noteId}`)
-//           .expect(404, { error: { message: `Note doesn't exist` } })
-//       })
-//     })
+  describe(`GET /notes/note_:id`, () => {
+    context(`Given no notes`, () => {
+      it(`responds with 404`, () => {
+        const noteId = 123
+        return supertest(app)
+          .get(`/notes/${noteId}`)
+          .expect(404, { error: { message: `Note doesn't exist` } })
+      })
+    })
 
-//     context('Given there are notes in the database', () => {
-//         const testFolders = makeFoldersArray();
-//         const testNotes = makeNotesArray();
+    context('Given there are notes in the database', () => {
+        const testFolders = makeFoldersArray();
+        const testNotes = makeNotesArray();
 
-//       beforeEach('insert notes', () => {
-//         return db
-//           .into('noteful')
-//           .insert(testFolders)
-//           .then(() => {
-//             return db
-//               .into('noteful')
-//               .insert(testNotes)
-//           })
-//       })
+      beforeEach('insert notes', () => {
+        return db
+          .into('folder')
+          .insert(testFolders)
+          .then(() => {
+            return db
+              .into('note')
+              .insert(testNotes)
+          })
+      })
 
-//       it('responds with 200 and the specified note', () => {
-//         const noteId = 2
-//         const expectedNote = testNotes[noteId - 1]
-//         return supertest(app)
-//           .get(`/notes/${noteId}`)
-//           .expect(200, expectedNote)
-//       })
-//     })
-// })
+      it('responds with 200 and the specified note', () => {
+        const noteId = 2
+        const expectedNote = testNotes[noteId - 1]
+        return supertest(app)
+          .get(`/notes/${noteId}`)
+          .expect(200, expectedNote)
+      })
+    })
+})
 
 //   describe(`POST /notes`, () => {
 //     const testNotes = makeNotesArray();

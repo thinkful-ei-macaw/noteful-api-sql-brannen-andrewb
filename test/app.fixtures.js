@@ -1,16 +1,16 @@
 function makeFoldersArray() {
     return [
         {
-            id: '1',
+            id: 1,
             name: 'Good Dogs',
         },
         {
-            id: '2',
+            id: 2,
             name: 'Very Good Dogs',
         },
         {
-            id: '3',
-            name: 'All dogs are good dogs'
+            id: 3,
+            name: 'All dogs are good dogs',
         }
     ];
 }

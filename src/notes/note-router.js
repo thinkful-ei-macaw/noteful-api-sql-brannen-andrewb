@@ -58,7 +58,7 @@ noteRouter
             .then(note => {
                 if(!note) {
                     return res.status(404).json({
-                        error: { message: `User doesn't exist` }
+                        error: { message: `Note doesn't exist` }
                     })
                 }
                 res.note = note
