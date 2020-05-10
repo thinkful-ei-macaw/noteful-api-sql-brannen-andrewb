@@ -58,7 +58,7 @@ describe('Notes Endpoints', function() {
     })
 
 
-  describe(`GET /notes/note_:id`, () => {
+  describe(`GET /notes/:note_id`, () => {
     context(`Given no notes`, () => {
       it(`responds with 404`, () => {
         const noteId = 123
