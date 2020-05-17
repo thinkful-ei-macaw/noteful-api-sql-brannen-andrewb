@@ -22,8 +22,8 @@ folderRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { id, name } = req.body
-        const newFolder = { id, name }
+        const { name } = req.body
+        const newFolder = { name }
 
         for(const[key, value] of Object.entries(newFolder)) {
             if(value == null) {
