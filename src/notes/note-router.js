@@ -75,7 +75,7 @@ noteRouter
             req.params.note_id
         )
             .then(() => {
-                res.status(204).end()
+                res.status(202).json({}).end()
             })
             .catch(next)
     })
